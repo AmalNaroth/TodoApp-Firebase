@@ -1,6 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoapp_project/view_models/auth_viewmodel.dart';
+import 'package:todoapp_project/view_models/splash_viewmodel.dart';
+import 'package:todoapp_project/views/login_screen.dart';
+import 'package:todoapp_project/views/splash_screen.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -9,28 +17,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-       // useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SplashViewModel(),),
+        ChangeNotifierProvider(create: (context) => LoginProvider(),),
+        ChangeNotifierProvider(create: (context) => SignUpProvider(),),
+        ChangeNotifierProvider(create: (context) => GoogleSigningProvider(),),
+        ChangeNotifierProvider(create: (context) => PhoneVerificationProvider(),),
+        ChangeNotifierProvider(create: (context) => OtpVerification(),),
+        ChangeNotifierProvider(create: (context) => LogoutProvider(),)
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+         // useMaterial3: true,
+        ),
+        initialRoute: '/splash',
+        routes: {
+          '/splash' :(context) => const SplashScreen(),
+          '/login' : (context)=> LoginScreen(),
+        },
       ),
-      home: const MyHomePage(),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key,});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold();
   }
 }
