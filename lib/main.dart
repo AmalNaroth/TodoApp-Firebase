@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todoapp_project/view_models/addDataFirebase_viewmodel.dart.dart';
 import 'package:todoapp_project/view_models/auth_viewmodel.dart';
+import 'package:todoapp_project/view_models/newTask_viewmodel.dart';
 import 'package:todoapp_project/view_models/splash_viewmodel.dart';
 import 'package:todoapp_project/views/login_screen.dart';
 import 'package:todoapp_project/views/splash_screen.dart';
@@ -25,7 +27,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => GoogleSigningProvider(),),
         ChangeNotifierProvider(create: (context) => PhoneVerificationProvider(),),
         ChangeNotifierProvider(create: (context) => OtpVerification(),),
-        ChangeNotifierProvider(create: (context) => LogoutProvider(),)
+        ChangeNotifierProvider(create: (context) => LogoutProvider(),),
+        ChangeNotifierProvider(create: (context) => NewTaskProvider(),),
+        ChangeNotifierProvider(create: (context) => AddToFireBaseProvider(),),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

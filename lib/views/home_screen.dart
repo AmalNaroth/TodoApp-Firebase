@@ -74,12 +74,13 @@ class HomeScreen extends StatelessWidget {
                           ElevatedButton(
                             onPressed: () {
                               showModalBottomSheet(
+                                useRootNavigator: true,
                                 isScrollControlled: true,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 context: context,
-                                builder: (context) => NewTaskScreen(),
+                                builder: (context) => StatefulBuilder(builder: (context, setState) => NewTaskScreen(),),
                               );
                             },
                             child: TextStyleWidget(value: "+ New Task"),
