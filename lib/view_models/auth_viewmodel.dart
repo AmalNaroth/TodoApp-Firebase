@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp_project/components/customSnackbar.dart';
+import 'package:todoapp_project/models/usermodel.dart';
 import 'package:todoapp_project/views/home_screen.dart';
 import 'package:todoapp_project/views/login_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -29,9 +31,7 @@ class LoginProvider extends ChangeNotifier {
         cred = await _auth.signInWithEmailAndPassword(
             email: _emailContoller.text, password: _passWordController.text);
         customSnackBAr("Login Success", context);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ));
+       Navigator.of(context).pushReplacementNamed('/home');
         _emailContoller.clear();
         _passWordController.clear();
       } catch (err) {
@@ -49,26 +49,32 @@ class LoginProvider extends ChangeNotifier {
 //singup
 class SignUpProvider extends ChangeNotifier {
   FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseFirestore _db=FirebaseFirestore.instance;
   TextEditingController _emailContoller = TextEditingController();
   TextEditingController _passWordController = TextEditingController();
+   TextEditingController _userNameController = TextEditingController();
   UserCredential ? cred;
 
   bool isLoading=false;
 
   TextEditingController get emailGet => _emailContoller;
   TextEditingController get passwordGet => _passWordController;
+  TextEditingController get usernameGet => _userNameController;
   bool get linearPrograss=>isLoading;
 
   Future<void> signupFunction({required BuildContext context}) async{
-    if(_emailContoller.text.isNotEmpty && _passWordController.text.isNotEmpty){
+    if(_emailContoller.text.isNotEmpty && _passWordController.text.isNotEmpty && _emailContoller.text.isNotEmpty){
       isLoading=true;
       notifyListeners();
       try{
         cred=await _auth.createUserWithEmailAndPassword(email: _emailContoller.text, password: _passWordController.text);
         customSnackBAr("Signup Success", context);
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(),));
+        Navigator.of(context).pushReplacementNamed('/home');
+        UserModel usermodel=UserModel(userName: _userNameController.text, userEmail: _emailContoller.text);
+        await _db.collection("Users").doc(cred!.user!.uid).set(usermodel.toMap());
         _emailContoller.clear();
         _passWordController.clear();
+        _userNameController.clear();
       }catch(err){
         customSnackBAr(err.toString(), context);
         notifyListeners();
@@ -101,10 +107,10 @@ class GoogleSigningProvider extends ChangeNotifier {
         await _auth.signInWithCredential(authCredential);
         if (_auth.currentUser!.emailVerified == true ||
             _auth.currentUser != null) {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(),));
+          Navigator.of(context).pushReplacementNamed('/home');
           customSnackBAr("Login success", context);
         } else {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginScreen(),));
+          Navigator.of(context).pushReplacementNamed('/login');
           customSnackBAr("Login Fail", context);
         }
         notifyListeners();
@@ -191,11 +197,7 @@ class OtpVerification extends ChangeNotifier{
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: phoneVerification.verificationGet, smsCode: OTP);
       await _auth.signInWithCredential(credential);
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ),
-      );
+       Navigator.of(context).pushReplacementNamed('/home');
       customSnackBAr("OTP varified", context);
     } catch (e) {
       customSnackBAr("Please check the OTP and enter correct", context);

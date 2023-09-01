@@ -14,6 +14,8 @@ class SignUpScreen extends StatelessWidget {
     await Provider.of<SignUpProvider>(context,listen: false).signupFunction(context: context);
   }
 
+  final _formKey=GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
    final signUpProvider = Provider.of<SignUpProvider>(context);
@@ -24,79 +26,88 @@ class SignUpScreen extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           child: Padding(
             padding: const EdgeInsets.all(30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Spacer(),
-                TextStyleWidget(
-                  value: "Tell Us About You!",
-                  textColor: blackColor,
-                  textSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-                const Gap(10),
-                TextStyleWidget(
-                    value: "Make it work, make it right, make it fast",
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Spacer(),
+                  TextStyleWidget(
+                    value: "Tell Us About You!",
                     textColor: blackColor,
-                    textSize: 15),
-                const Gap(20),
-                TextFormFieldWidget(
-                    controller: signUpProvider.emailGet,
-                    icon: Icons.email_outlined,
-                    hinttext: "E-Mail"),
-                const Gap(20),
-                TextFormFieldWidget(
-                    controller: signUpProvider.passwordGet,
-                    icon: Icons.fingerprint_outlined,
-                    suffixIconTrue: Icons.visibility_off_outlined,
-                    suffixIconFalse: Icons.visibility_outlined,
-                    hinttext: "Password"),
-                const Gap(30),
-                GestureDetector(
-                  onTap: () {
-                    callSignUP(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Center(
-                      child: TextStyleWidget(
-                          value: "Register", textColor: whiteColor, textSize: 16),
-                    ),
+                    textSize: 28,
+                    fontWeight: FontWeight.bold,
                   ),
-                ),
-                const Gap(20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextStyleWidget(
-                        value: "Already have an account?",
-                        textColor: blackColor,
-                        textSize: 15),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: TextStyleWidget(
-                        value: "Login",
-                        textColor: blackColor,
-                        textSize: 15,
-                        fontWeight: FontWeight.w600,
+                  const Gap(10),
+                  TextStyleWidget(
+                      value: "Make it work, make it right, make it fast",
+                      textColor: blackColor,
+                      textSize: 15),
+                      const Gap(20),
+                  TextFormFieldWidget(
+                      controller: signUpProvider.usernameGet,
+                      icon: Icons.person,
+                      hinttext: "User name",
+                      valueKey: "name"),
+                  const Gap(20),
+                  TextFormFieldWidget(
+                      controller: signUpProvider.emailGet,
+                      icon: Icons.email_outlined,
+                      hinttext: "E-Mail",
+                      valueKey: 'email'),
+                  const Gap(20),
+                  TextFormFieldWidget(
+                      controller: signUpProvider.passwordGet,
+                      icon: Icons.fingerprint_outlined,
+                      hinttext: "Password",
+                      valueKey: 'password'),
+                  const Gap(30),
+                  GestureDetector(
+                    onTap: () {
+                      callSignUP(context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Center(
+                        child: TextStyleWidget(
+                            value: "Register", textColor: whiteColor, textSize: 16),
                       ),
                     ),
-                  ],
-                ),
-                Visibility(
-                  visible: signUpProvider.linearPrograss,
-                  child: LinearProgressIndicator(
-                    color: Colors.blue,
                   ),
-                ),
-                const Spacer(),
-              ],
+                  const Gap(20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextStyleWidget(
+                          value: "Already have an account?",
+                          textColor: blackColor,
+                          textSize: 15),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: TextStyleWidget(
+                          value: "Login",
+                          textColor: blackColor,
+                          textSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Visibility(
+                    visible: signUpProvider.linearPrograss,
+                    child: LinearProgressIndicator(
+                      color: Colors.blue,
+                    ),
+                  ),
+                  const Spacer(),
+                ],
+              ),
             ),
           ),
         ),

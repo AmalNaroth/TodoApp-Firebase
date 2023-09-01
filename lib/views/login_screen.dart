@@ -45,21 +45,21 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const Gap(10),
                 TextStyleWidget(
-                    value: "Make it work, make it right, make it fast",
+                    value: "Welcome back you've been missed!",
                     textColor: blackColor,
                     textSize: 15),
                 const Gap(20),
                 TextFormFieldWidget(
                     controller: signingProvider.emailGet,
                     icon: Icons.email_outlined,
-                    hinttext: "E-Mail"),
+                    hinttext: "E-Mail",
+                    valueKey: 'email'),
                 const Gap(20),
                 TextFormFieldWidget(
                     controller: signingProvider.passwordGet,
                     icon: Icons.fingerprint_outlined,
-                    suffixIconTrue: Icons.visibility_off_outlined,
-                    suffixIconFalse: Icons.visibility_outlined,
-                    hinttext: "Password"),
+                    hinttext: "Password",
+                    valueKey: 'password'),
                 const Gap(10),
                 Align(
                   alignment: Alignment.centerRight,

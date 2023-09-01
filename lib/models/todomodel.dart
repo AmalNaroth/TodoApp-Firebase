@@ -1,15 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class TodoModel {
   String taskTitle;
   String taskDescripction;
   bool ckeckedBox;
-  DateTime taskDate;
+  String dateAndTime;
   TodoModel({
     required this.taskTitle,
     required this.taskDescripction,
     required this.ckeckedBox,
-    required this.taskDate,
+    required this.dateAndTime
   });
 
   Map<String, dynamic> toMap() {
@@ -17,7 +18,7 @@ class TodoModel {
       'taskTitle': taskTitle,
       'taskDescripction': taskDescripction,
       'ckeckedBox': ckeckedBox,
-      'taskDate': taskDate,
+      'dateAndTime' : dateAndTime
     };
   }
 
@@ -26,7 +27,7 @@ class TodoModel {
       taskTitle: map['taskTitle'] as String,
       taskDescripction: map['taskDescripction'] as String,
       ckeckedBox: map['ckeckedBox'] as bool,
-      taskDate:map['taskDate'] as DateTime,
+      dateAndTime: map['dateAndTime'] as String
     );
   }
 }

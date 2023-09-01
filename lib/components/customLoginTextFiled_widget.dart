@@ -1,53 +1,37 @@
 import 'package:flutter/material.dart';
 
-class TextFormFieldWidget extends StatefulWidget {
+class TextFormFieldWidget extends StatelessWidget {
 
   TextEditingController controller;
   IconData icon;
-  IconData? suffixIconTrue;
-  IconData? suffixIconFalse;
   String hinttext;
+  String valueKey;
 
-   TextFormFieldWidget({super.key,required this.controller,required this.icon,this.suffixIconTrue,this.suffixIconFalse,required this.hinttext});
-
-  @override
-  State<TextFormFieldWidget> createState() => _TextFormFieldWidgetState();
-}
-
-class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
-   bool _passwordVisible = false;
+   TextFormFieldWidget({super.key,required this.controller,required this.icon,required this.hinttext,required this.valueKey});
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: widget.controller,
-      obscureText: _passwordVisible,
-      decoration: InputDecoration(
-        prefixIcon: Icon(widget.icon),
-        hintText: widget.hinttext,
-        suffixIcon: IconButton(onPressed: (){
-        setState(() {
-          _passwordVisible = !_passwordVisible;
-        });
-        }, icon: Icon(
-          _passwordVisible ?
-          widget.suffixIconFalse : widget.suffixIconTrue,
-          color: const Color.fromARGB(255, 121, 121, 121),)),
-        enabledBorder: OutlineInputBorder(
+    final bordervalue=OutlineInputBorder(
           borderSide: BorderSide(
             width: 2,
             color: Color.fromARGB(255, 134, 134, 134),
           ),
           borderRadius: BorderRadius.circular(7),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(7),
-          borderSide: BorderSide(
-            width: 2,
-            color: Color.fromARGB(255, 20, 1, 118)
-          )
-        ),
-      ),
-    );
+        );
+    return TextFormField(
+      validator: (value) {
+        if(value!.isEmpty ){
+          return "Incorrect $valueKey fill it";
+        }
+        return null;
+      },
+      key: ValueKey(valueKey),
+      controller: controller,
+      decoration: InputDecoration(
+        prefixIcon: Icon(icon),
+        hintText: hinttext,
+        enabledBorder: bordervalue,
+        focusedBorder: bordervalue),
+      );
   }
 }
